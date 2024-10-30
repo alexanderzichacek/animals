@@ -1,0 +1,16 @@
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+/vendor/
+/composer.lock
+
+/log/*
+!/log/.gitkeep
+/temp/*
+!/temp/.gitkeep
+
+.env.local
+.env
