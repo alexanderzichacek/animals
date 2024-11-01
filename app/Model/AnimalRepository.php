@@ -34,12 +34,25 @@ class AnimalRepository
 
     $animals = [];
     foreach ($xml->animal as $animal) {
+      $photoUrlsArray = [];
+      foreach ($animal->photoUrls->photoUrl as $photoUrl) {
+        $photoUrlsArray[] = [
+          'photoUrl' => (string) $photoUrl,
+        ];
+      }
+      $tagsArray = [];
+      foreach ($animal->tags->tag as $tag) {
+        $tagsArray[] = [
+          'tag' => $tag,
+        ];
+      }
+
       $animals[] = [
         'id' => (string) $animal->id,
         'name' => (string) $animal->name,
         'category' => $animal->category,
-        'photoUrls' => $animal->photoUrls,
-        'tags' => $animal->tags,
+        'photoUrls' => (array) $photoUrlsArray,
+        'tags' => (array) $tagsArray,
         'status' => (string) $animal->status,
       ];
     }
@@ -54,12 +67,25 @@ class AnimalRepository
     $animalById = [];
     foreach ($xml->animal as $animal) {
       if ($animal->id == $id) {
+        $photoUrlsArray = [];
+        foreach ($animal->photoUrls->photoUrl as $photoUrl) {
+          $photoUrlsArray[] = [
+            'photoUrl' => (string) $photoUrl,
+          ];
+        }
+        $tagsArray = [];
+        foreach ($animal->tags->tag as $tag) {
+          $tagsArray[] = [
+            'tag' => $tag,
+          ];
+        }
+
         $animalById[] = [
           'id' => (string) $animal->id,
           'name' => (string) $animal->name,
           'category' => $animal->category,
-          'photoUrls' => $animal->photoUrls,
-          'tags' => $animal->tags,
+          'photoUrls' => (array) $photoUrlsArray,
+          'tags' => (array) $tagsArray,
           'status' => (string) $animal->status,
         ];
       }
@@ -74,13 +100,28 @@ class AnimalRepository
 
     $animalsByTag = [];
     foreach ($xml->animal as $animal) {
-      if ($animal->tags->tag->name == $tag) {
+      $photoUrlsArray = [];
+      foreach ($animal->photoUrls->photoUrl as $photoUrl) {
+        $photoUrlsArray[] = [
+          'photoUrl' => (string) $photoUrl,
+        ];
+      }
+      $tagsArray = [];
+      $tagsNames = [];
+      foreach ($animal->tags->tag as $singleTag) {
+        $tagsArray[] = [
+          'tag' => $singleTag,
+        ];
+        $tagsNames[] = $singleTag->name;
+      }
+
+      if (in_array($tag, $tagsNames)) {
         $animalsByTag[] = [
           'id' => (string) $animal->id,
           'name' => (string) $animal->name,
           'category' => $animal->category,
-          'photoUrls' => $animal->photoUrls,
-          'tags' => $animal->tags,
+          'photoUrls' => $photoUrlsArray,
+          'tags' => $tagsArray,
           'status' => (string) $animal->status,
         ];
       }
@@ -96,12 +137,25 @@ class AnimalRepository
     $animalsByStatus = [];
     foreach ($xml->animal as $animal) {
       if ($animal->status == $status) {
+        $photoUrlsArray = [];
+        foreach ($animal->photoUrls->photoUrl as $photoUrl) {
+          $photoUrlsArray[] = [
+            'photoUrl' => (string) $photoUrl,
+          ];
+        }
+        $tagsArray = [];
+        foreach ($animal->tags->tag as $tag) {
+          $tagsArray[] = [
+            'tag' => $tag,
+          ];
+        }
+
         $animalsByStatus[] = [
           'id' => (string) $animal->id,
           'name' => (string) $animal->name,
           'category' => $animal->category,
-          'photoUrls' => $animal->photoUrls,
-          'tags' => $animal->tags,
+          'photoUrls' => (array) $photoUrlsArray,
+          'tags' => (array) $tagsArray,
           'status' => (string) $animal->status,
         ];
       }

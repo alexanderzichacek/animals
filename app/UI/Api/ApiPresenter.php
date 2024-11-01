@@ -21,7 +21,7 @@ class ApiPresenter extends Presenter
         }
         $animalById = $this->animalRepository->findById($id);
 
-        $this->sendResponse(new JsonResponse($animalById, 200));
+        $this->sendResponse(new JsonResponse($animalById));
     }
 
     public function actionGetByTag(string $tag): void
