@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<animals>
+  <animal>
+    <id>1</id>
+    <name>doggie</name>
+    <category>
+      <id>1</id>
+      <name>Dogs</name>
+    </category>
+    <photoUrls>
+      <photoUrl>string</photoUrl>
+    </photoUrls>
+    <tags>
+      <tag>
+        <id>0</id>
+        <name>tag1</name>
+      </tag>
+    </tags>
+    <status>available</status>
+  </animal>
+  <animal>
+    <id>2</id>
+    <name>cat</name>
+    <category>
+      <id>2</id>
+      <name>Cats</name>
+    </category>
+    <photoUrls>
+      <photoUrl>string</photoUrl>
+    </photoUrls>
+    <tags>
+      <tag>
+        <id>0</id>
+        <name>tag1</name>
+      </tag>
+    </tags>
+    <status>available</status>
+  </animal>
+</animals>
