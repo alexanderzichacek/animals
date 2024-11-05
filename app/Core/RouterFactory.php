@@ -22,6 +22,7 @@ final class RouterFactory
 		$router->addRoute('pet/findByStatus/<status>', 'Api:GetByStatus');
 
 		$router->addRoute('<presenter>/<action>[/<id>]', 'Home:default');
+		$router->addRoute('animal-detail/<id>', 'AnimalDetail:default');
 
 		return $router;
 	}

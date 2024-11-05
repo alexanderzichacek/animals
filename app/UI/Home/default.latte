@@ -83,6 +83,7 @@
         const row = document.createElement("tr");
 
         row.addEventListener("click", () => {
+            console.log("Clicked on pet with ID:", pet.id);
             window.location.href = `/animal-detail/${pet.id}`;
         });
 
@@ -119,6 +120,7 @@
         deleteButton.textContent = "Delete";
         deleteButton.classList.add("btn", "btn-danger");
         deleteButton.addEventListener("click", function(){
+            event.stopPropagation();
             deleteAnimal(idCell.textContent);
         });
         actionCell.appendChild(deleteButton);
