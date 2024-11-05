@@ -1,0 +1,104 @@
+{block content}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap4.js"></script>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="{$presenter->link('Home:default')}">Animal Store</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="{$presenter->link('Home:default')}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{$presenter->link('Create:default')}">Create</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="main">
+    <h1>Animal Details</h1>
+    <div id="animalData">
+        <table id="petTable" class="table table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Photo Urls</th>
+                    <th>Tags</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script n:syntax="off">
+    document.addEventListener('DOMContentLoaded', function() {
+        const tagValue = window.location.pathname.split('/').pop();
+        fetch(`http://localhost:8000/pet/findByTags/${tagValue}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+              insertAnimalData(data);
+              $('#petTable').DataTable();
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+                document.getElementById('animalData').innerHTML = 'Cannot load data';
+            });
+    });
+
+    function insertAnimalData(animalDataArray) {
+      const tbody = document.querySelector("#petTable tbody");
+
+      animalDataArray.forEach(pet => {
+        const row = document.createElement("tr");
+        const idCell = document.createElement("td");
+        idCell.textContent = pet.id;
+        row.appendChild(idCell);
+
+        const nameCell = document.createElement("td");
+        nameCell.textContent = pet.name;
+        row.appendChild(nameCell);
+
+        const categoryCell = document.createElement("td");
+        categoryCell.textContent = pet.category.name;
+        row.appendChild(categoryCell);
+
+        const statusCell = document.createElement("td");
+        statusCell.textContent = pet.status;
+        row.appendChild(statusCell);
+        
+        const photoUrlsCell = document.createElement("td");
+        photoUrlsCell.textContent = pet.photoUrls.map(url => url.photoUrl).join('\n');
+        row.appendChild(photoUrlsCell);
+
+        const tagsCell = document.createElement("td");
+        tagsCell.textContent = pet.tags.map(tag => tag.tag.name).join('\n');
+        row.appendChild(tagsCell);
+
+        tbody.appendChild(row);
+      });
+    }
+</script>
+
+<style>
+    .main {
+        padding: 2rem;
+    }
+</style>
+{/block}

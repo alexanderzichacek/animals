@@ -204,4 +204,77 @@ class AnimalRepository
 
     return ['message' => 'Animal added successfully', 'status' => 201];
   }
+
+  public function deleteAnimal($id): array
+  {
+    $xml = $this->controlFile();
+
+    $animal = $xml->xpath("//animal[id='{$id}']");
+
+    if (empty($animal)) {
+      return ['message' => 'Animal not found', 'status' => 404];
+    }
+
+    $animal = $animal[0];
+
+    $dom = dom_import_simplexml($animal);
+    $dom->parentNode->removeChild($dom);
+
+    $xml->asXML($this->xmlFilePath);
+
+    return ['message' => 'Animal deleted successfully', 'status' => 200];
+  }
+
+  public function updateAnimal($id, $data): array
+  {
+    $xml = $this->controlFile();
+
+    if (empty($id)) {
+      return ['message' => 'Id of pet is required', 'status' => 400];
+    }
+
+    $animal = $xml->xpath("//animal[id='{$id}']");
+
+    if (empty($animal)) {
+      return ['message' => 'Animal not found', 'status' => 404];
+    }
+
+    $animal = $animal[0];
+
+    if (isset($data['name'])) {
+      $animal->name = htmlspecialchars($data['name']);
+    }
+
+    if (isset($data['category'])) {
+      $category = $animal->category;
+      $category->id = htmlspecialchars($data['category']['id']);
+      $category->name = htmlspecialchars($data['category']['name']);
+    }
+
+    if (isset($data['photoUrls'])) {
+      unset($animal->photoUrls);
+      $photoUrls = $animal->addChild('photoUrls');
+      foreach ($data['photoUrls'] as $photoUrl) {
+        $photoUrls->addChild('photoUrl', htmlspecialchars($photoUrl['photoUrl']));
+      }
+    }
+
+    if (isset($data['tags'])) {
+      unset($animal->tags);
+      $tags = $animal->addChild('tags');
+      foreach ($data['tags'] as $tag) {
+        $tagNode = $tags->addChild('tag');
+        $tagNode->addChild('id', htmlspecialchars($tag['id']));
+        $tagNode->addChild('name', htmlspecialchars($tag['name']));
+      }
+    }
+
+    if (isset($data['status'])) {
+      $animal->status = htmlspecialchars($data['status']);
+    }
+
+    $xml->asXML($this->xmlFilePath);
+
+    return ['message' => 'Animal updated successfully', 'status' => 200];
+  }
 }

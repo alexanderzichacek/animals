@@ -16,8 +16,8 @@ final class RouterFactory
 	{
 		$router = new RouteList;
 
-		$router->addRoute('pet', 'Api:ProcessPetRequest');
-		$router->addRoute('pet/<id>', 'Api:GetById');
+		$router->addRoute('pet', 'Api:ProcessAnimalRequest');
+		$router->addRoute('pet/<id>', 'Api:ProcessAnimalRequestId');
 		$router->addRoute('pet/findByTags/<tag>', 'Api:GetByTag');
 		$router->addRoute('pet/findByStatus/<status>', 'Api:GetByStatus');
 

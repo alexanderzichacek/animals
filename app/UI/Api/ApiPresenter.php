@@ -14,16 +14,6 @@ class ApiPresenter extends Presenter
         $this->animalRepository = new AnimalRepository();
     }
 
-    public function actionGetById(int $id): void
-    {
-        if ($this->getHttpRequest()->getMethod() !== 'GET') {
-            $this->error('Method Not Allowed', 405);
-        }
-        $animalById = $this->animalRepository->findById($id);
-
-        $this->sendResponse(new JsonResponse($animalById));
-    }
-
     public function actionGetByTag(string $tag): void
     {
         if ($this->getHttpRequest()->getMethod() !== 'GET') {
@@ -44,7 +34,7 @@ class ApiPresenter extends Presenter
         $this->sendResponse(new JsonResponse($animalsByStatus));
     }
 
-    public function actionProcessPetRequest(): void
+    public function actionProcessAnimalRequest(): void
     {
         if ($this->getHttpRequest()->getMethod() === 'GET') {
             $animals = $this->animalRepository->findAll();
@@ -54,6 +44,25 @@ class ApiPresenter extends Presenter
             $data = json_decode(file_get_contents('php://input'), true);
 
             $result = $this->animalRepository->createAnimal($data);
+
+            $this->sendResponse(new JsonResponse($result['message'], $result['status']));
+        }
+    }
+
+    public function actionProcessAnimalRequestId($id): void
+    {
+        if ($this->getHttpRequest()->getMethod() === 'GET') {
+            $animalById = $this->animalRepository->findById($id);
+
+            $this->sendResponse(new JsonResponse($animalById));
+        } elseif ($this->getHttpRequest()->getMethod() === 'DELETE') {
+            $result = $this->animalRepository->deleteAnimal($id);
+
+            $this->sendResponse(new JsonResponse($result['message'], $result['status']));
+        } elseif ($this->getHttpRequest()->getMethod() === 'PUT') {
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            $result = $this->animalRepository->updateAnimal($id, $data);
 
             $this->sendResponse(new JsonResponse($result['message'], $result['status']));
         }

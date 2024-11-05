@@ -7,17 +7,10 @@
       <id>1</id>
       <name>Dogs</name>
     </category>
-    <photoUrls>
-      <photoUrl>string1</photoUrl>
-    </photoUrls>
-    <tags>
-      <tag>
-        <id>0</id>
-        <name>tag1</name>
-      </tag>
-    </tags>
-    <status>available</status>
-  </animal>
+    
+    
+    <status>not available</status>
+  <photoUrls><photoUrl>string1</photoUrl></photoUrls><tags><tag><id>0</id><name>tag2</name></tag></tags></animal>
   <animal>
     <id>2</id>
     <name>cat</name>
@@ -61,38 +54,21 @@
   </animal>
   <animal>
     <id>4</id>
-    <name>Havinko</name>
+    <name>Havkoo</name>
     <category>
       <id>1</id>
       <name>Dogs</name>
     </category>
-    <photoUrls>
-      <photoUrl>string4</photoUrl>
-    </photoUrls>
-    <tags>
-      <tag>
-        <id>0</id>
-        <name>tag1</name>
-      </tag>
-    </tags>
-    <status>available</status>
-  </animal>
-  <animal>
-    <id>5</id>
-    <name>Azor</name>
-    <category>
-      <id>1</id>
-      <name>Dogs</name>
-    </category>
-    <photoUrls>
-      <photoUrl>string5</photoUrl>
-    </photoUrls>
-    <tags>
-      <tag>
-        <id>0</id>
-        <name>tag1</name>
-      </tag>
-    </tags>
     <status>not available</status>
+    <photoUrls>
+      <photoUrl>string</photoUrl>
+    </photoUrls>
+    <tags>
+      <tag>
+        <id>0</id>
+        <name>tag2</name>
+      </tag>
+    </tags>
   </animal>
+
 </animals>

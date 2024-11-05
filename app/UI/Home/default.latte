@@ -14,7 +14,7 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="{$presenter->link('Home:default')}">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{$presenter->link('Create:default')}">Create</a>
@@ -34,15 +34,29 @@
                     <th>Status</th>
                     <th>Photo Urls</th>
                     <th>Tags</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
             </tbody>
         </table>
     </div>
+
+    <div class="findBy">
+        <input type="text" id="findById" name="findById" class="form-control" placeholder="Insert animal ID">
+        <button id ="btnFindById" class="btn btn-primary">Find by id</button>
+    </div>
+    <div class="findBy">
+        <input type="text" id="findByTag" name="findByTag" class="form-control" placeholder="Insert animal tag">
+        <button id ="btnFindByTag" class="btn btn-primary">Find by tag</button>
+    </div>
+    <div class="findBy">
+        <input type="text" id="findByStatus" name="findByStatus" class="form-control" placeholder="Insert animal status">
+        <button id ="btnFindByStatus" class="btn btn-primary">Find by status</button>
+    </div>
 </div>
 
-<script>
+<script n:syntax="off">
     function fetchAnimalData() {
         fetch('http://localhost:8000/pet')
             .then(response => {
@@ -67,6 +81,10 @@
 
     animalDataArray.forEach(pet => {
         const row = document.createElement("tr");
+
+        row.addEventListener("click", () => {
+            window.location.href = `/animal-detail/${pet.id}`;
+        });
 
         const idCell = document.createElement("td");
         idCell.textContent = pet.id;
@@ -96,16 +114,76 @@
         }
         row.appendChild(tagsCell);
 
+        const actionCell = document.createElement("td");
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.classList.add("btn", "btn-danger");
+        deleteButton.addEventListener("click", function(){
+            deleteAnimal(idCell.textContent);
+        });
+        actionCell.appendChild(deleteButton);
+        row.appendChild(actionCell);
+
         tbody.appendChild(row);
     });
-}
+    }
 
-    document.addEventListener('DOMContentLoaded', fetchAnimalData);
+    async function deleteAnimal(id) {
+        const options = {
+        method: "DELETE"
+        };
+        const response = await fetch(`http://localhost:8000/pet/${id}`, options);
+
+        if (response.ok) {
+        console.log("Animal deleted successfully!");
+        } else {
+        console.error("Failed to delete animal");
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchAnimalData();
+
+        document.getElementById("btnFindById").addEventListener("click", () => {
+            const id = document.getElementById("findById").value;
+            if (id) {
+                window.location.href = `/find-by/id/${id}`;
+            }
+        });
+
+        document.getElementById("btnFindByTag").addEventListener("click", () => {
+            const tag = document.getElementById("findByTag").value;
+            if (tag) {
+                window.location.href = `/find-by/tag/${tag}`;
+            }
+        });
+
+        document.getElementById("btnFindByStatus").addEventListener("click", () => {
+            const status = document.getElementById("findByStatus").value;
+            if (status) {
+                window.location.href = `/find-by/status/${status}`;
+            }
+        });
+    });
 </script>
 
 <style>
     .main {
         padding: 2rem;
+    }
+    .findBy {
+        max-width: 40%;
+        display: flex;
+        padding-top: 1rem;
+    }
+    .findBy button {
+        margin-left: 1rem;
+    }
+    .findBy > * {
+        width: auto;
+        flex-grow: 0;
+        flex-shrink: 0;
+        box-sizing: border-box;
     }
 </style>
 {/block}
